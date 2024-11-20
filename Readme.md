@@ -56,7 +56,7 @@
     <pre><code>cd &lt;project_directory&gt;</code></pre>
   </li>
   <li>Compile the program:
-    <pre><code>javac Main.java</code></pre>
+    <pre><code>javac MyShell.java or java MyShell.java</code></pre>
   </li>
   <li>Run the shell:
     <pre><code>java Main</code></pre>
@@ -75,71 +75,3 @@
     <pre><code>MyShell > exit</code></pre>
   </li>
 </ul>
-
----
-
-<h2>📜 Code</h2>
-
-```java
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
-
-public class Main {
-    public static Scanner scanner = new Scanner(System.in);
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_RESET = "\u001B[0m";
-
-    private static File currentDirectory = new File(System.getProperty("user.dir"));
-
-    public static void main(String[] args) {
-        String command;
-
-        while (true) {
-            System.out.print("MyShell > ");
-            command = scanner.nextLine().trim();
-
-            String[] tokens = command.split("\\s+");
-
-            if (tokens[0].equals("exit")) {
-                System.out.println("Exiting shell...");
-                break;
-            }
-
-            if (tokens[0].equals("cd")) {
-                if (tokens.length > 1) {
-                    changeDirectory(tokens[1]);
-                } else {
-                    System.out.println(ANSI_RED + "cd: missing argument" + ANSI_RESET);
-                }
-            } else {
-                executeExternalCommand(tokens);
-            }
-        }
-        scanner.close();
-    }
-
-    public static void changeDirectory(String path) {
-        File dir = new File(currentDirectory, path);
-
-        if (dir.exists() && dir.isDirectory()) {
-            currentDirectory = dir;
-            System.out.println("Changed to directory: " + currentDirectory.getAbsolutePath());
-        } else {
-            System.out.println(ANSI_RED + "cd: No such directory: " + path + ANSI_RESET);
-        }
-    }
-
-    public static void executeExternalCommand(String[] tokens) {
-        try {
-            ProcessBuilder builder = new ProcessBuilder(tokens);
-            builder.inheritIO();
-            builder.directory(currentDirectory);
-
-            Process process = builder.start();
-            process.waitFor();
-        } catch (IOException | InterruptedException e) {
-            System.out.println(ANSI_RED + "Error executing command: " + e.getMessage() + ANSI_RESET);
-        }
-    }
-}
