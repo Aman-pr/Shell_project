@@ -50,7 +50,7 @@
 <h3>Steps to Run</h3>
 <ol>
   <li>Clone the repository:
-    <pre><code>git clone &lt;[repository_url](https://github.com/Aman-pr/Shell_project.git)&gt;</code></pre>
+    <pre><code>git clone &lt;https://github.com/Aman-pr/Shell_project.git&gt;</code></pre>
   </li>
   <li>Navigate to the project directory:
     <pre><code>cd &lt;project_directory&gt;</code></pre>
